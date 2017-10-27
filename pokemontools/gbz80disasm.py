@@ -325,6 +325,9 @@ def data_label(address):
 	"""
 	return '.data_%x' % address
 
+def function_label(address):
+	return "Func_%x\n" % address
+
 def get_local_address(address):
 	"""
 	Return the local address of a rom address.
@@ -588,7 +591,8 @@ class Disassembler(object):
 		byte_labels = {}
 		data_tables = {}
 		
-		output = "Func_%x:%s\n" % (start_offset,create_address_comment(start_offset))
+
+		output = function_label(start_offset)
 		is_data = False
 		
 		while True:
@@ -680,7 +684,7 @@ class Disassembler(object):
 								opcode_output_str = byte_labels[local_target_address]["name"]
 							elif target_address < start_offset:
 							# if we're jumping to an address that is located before the start offset, assume it is a function
-								opcode_output_str = "Func_%x" % target_address
+								opcode_output_str = function_label(target_address)
 							else:
 							# create a new label
 								opcode_output_str = asm_label(target_address)
@@ -737,7 +741,7 @@ class Disassembler(object):
 					if opcode_byte in call_commands + absolute_jumps:
 						if target_label is None:
 						# if this is a call or jump opcode and the target label is not defined, create an undocumented label descriptor
-							target_label = "Func_%x" % target_offset
+							target_label = function_label(target_offset)
 
 					else:
 					# anything that isn't a call or jump is a load-based command
