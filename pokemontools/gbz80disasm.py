@@ -524,7 +524,11 @@ class Disassembler(object):
 			label = self.hram.get(address)
 		else:
 			label = None
-			
+
+		return label
+
+	def find_asm_label(self, address, bank=0):
+		label = self.find_label(address, bank) or asm_label(address)
 		return label
 
 	def get_symbol(self, address, bank):
@@ -637,8 +641,8 @@ class Disassembler(object):
 				data_tables[local_offset] = {}
 				data_tables[local_offset]["name"] = data_line_label
 				data_tables[local_offset]["usage"] = 0
-					
-				line_label = asm_label(offset)
+
+				line_label = self.find_asm_label(offset, bank_id)
 				byte_labels[local_offset] = {}
 				byte_labels[local_offset]["name"] = line_label
 				byte_labels[local_offset]["usage"] = 0
@@ -687,7 +691,7 @@ class Disassembler(object):
 								opcode_output_str = function_label(target_address)
 							else:
 							# create a new label
-								opcode_output_str = asm_label(target_address)
+								opcode_output_str = self.find_asm_label(local_target_address, bank_id)
 								byte_labels[local_target_address] = {}
 								byte_labels[local_target_address]["name"] = opcode_output_str
 								# we know the label is used once, so set the usage to 1
