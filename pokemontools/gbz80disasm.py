@@ -411,9 +411,10 @@ def load_symbols(path):
 				wram_sym[bank] = {}
 			
 			wram_sym[bank][address] = label
-		else:	
-			raise ValueError("Unsupported symfile label type.")
-		
+		else:
+			#raise ValueError("Unsupported symfile label type for symbol " + str(symbol))
+			print("Unsupported symfile label type for symbol " + str(symbol))
+
 	return sym, reverse_sym, wram_sym, sram_sym
 
 def get_symbol(sym, address, bank=0):
