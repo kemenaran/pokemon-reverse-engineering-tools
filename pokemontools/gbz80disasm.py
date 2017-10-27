@@ -535,6 +535,11 @@ class Disassembler(object):
 		symbol = get_symbol(self.sym, address, bank)
 		if symbol == 'NULL' and address == 0 and bank == 0:
 			return None
+
+		# Convert "GobalLabel.localLabel" into ".localLabel"
+		if symbol and symbol.find('.') != -1:
+			symbol = symbol[symbol.find('.'):]
+
 		return symbol
 
 	def get_wram(self, address):
