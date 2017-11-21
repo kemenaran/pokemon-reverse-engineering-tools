@@ -813,8 +813,11 @@ class Disassembler(object):
 			local_offset = get_local_address(offset)
 			
 			# stop processing regardless of function end if we've passed the stop offset and the hard stop (dry run) flag is set
-			if hard_stop and offset >= stop_offset:
-				break
+			if hard_stop:
+				if offset >= stop_offset:
+					break
+				else:
+				 	continue
 			# check if this is the end of the function, or we're processing data
 			elif (opcode_byte in unconditional_jumps + unconditional_returns) or is_data:
 				# define data if it is located at the current offset
