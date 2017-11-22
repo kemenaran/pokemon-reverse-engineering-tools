@@ -317,16 +317,16 @@ def asm_label(address):
 	"""
 	Return a local label name for asm at <address>.
 	"""
-	return '.asm_%x' % address
+	return 'label_%x' % address
 
 def data_label(address):
 	"""
 	Return a local label name for data at <address>.
 	"""
-	return '.data_%x' % address
+	return 'data_%x' % address
 
 def function_label(address):
-	return "Func_%x\n" % address
+	return "func_%x\n" % address
 
 def get_local_address(address):
 	"""
