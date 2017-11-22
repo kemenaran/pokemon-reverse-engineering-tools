@@ -326,7 +326,7 @@ def data_label(address):
 	return 'data_%x' % address
 
 def function_label(address):
-	return "func_%x\n" % address
+	return "func_%x" % address
 
 def get_local_address(address):
 	"""
@@ -600,8 +600,7 @@ class Disassembler(object):
 		byte_labels = {}
 		data_tables = {}
 		
-
-		output = function_label(start_offset)
+		output = function_label(start_offset) + "\n"
 		is_data = False
 		
 		while True:
@@ -749,8 +748,15 @@ class Disassembler(object):
 					
 					if opcode_byte in call_commands + absolute_jumps:
 						if target_label is None:
-						# if this is a call or jump opcode and the target label is not defined, create an undocumented label descriptor
+						# if this is a call or jump opcode and the target label is not defined, create a function byte label 
 							target_label = function_label(target_offset)
+							local_target_address = get_local_address(target_offset)
+							byte_labels[local_target_address] = {}
+							byte_labels[local_target_address]["name"] = target_label
+							# we know the label is used once, so set the usage to 1
+							byte_labels[local_target_address]["usage"] = 1
+							# since the label has not been output yet, mark it as "not defined"
+							byte_labels[local_target_address]["definition"] = False
 
 					else:
 					# anything that isn't a call or jump is a load-based command
@@ -830,11 +836,11 @@ class Disassembler(object):
 				output += "\n"
 		
 		# before returning output, we need to clean up some things
-		
+
 		# first, clean up on unused byte labels
 		for label_line in byte_labels.values():
 			if label_line["usage"] == 0:
-				output = output.replace((label_line["name"] + "\n"), "")
+				output = output.replace(("\n" + label_line["name"] + "\n"), "\n")
 		
 		# clean up on unused data labels
 		# this is slightly trickier to do as arguments for two byte variables use data labels
