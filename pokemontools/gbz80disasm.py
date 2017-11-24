@@ -695,7 +695,7 @@ class Disassembler(object):
 								opcode_output_str = function_label(target_address)
 							else:
 							# create a new label
-								opcode_output_str = self.find_asm_label(local_target_address, bank_id)
+								opcode_output_str = self.find_asm_label(target_address, bank_id)
 								byte_labels[local_target_address] = {}
 								byte_labels[local_target_address]["name"] = opcode_output_str
 								# we know the label is used once, so set the usage to 1
