@@ -512,6 +512,7 @@ class Disassembler(object):
 			return address
 		
 		if 0x0000 <= address < 0x8000:
+			# TODO: add option not to return local labels
 			label = self.get_symbol(address, bank)
 		elif address < 0xa000 and self.vram:
 			label = self.vram.get(address)
@@ -750,14 +751,22 @@ class Disassembler(object):
 					if opcode_byte in call_commands + absolute_jumps:
 						if target_label is None:
 						# if this is a call or jump opcode and the target label is not defined, create a function byte label 
-							target_label = function_label(target_offset)
-							local_target_address = get_local_address(target_offset)
-							byte_labels[local_target_address] = {}
-							byte_labels[local_target_address]["name"] = target_label
-							# we know the label is used once, so set the usage to 1
-							byte_labels[local_target_address]["usage"] = 1
-							# since the label has not been output yet, mark it as "not defined"
-							byte_labels[local_target_address]["definition"] = False
+							if 0x0000 <= local_target_offset < 0x8000:
+								# The opcode jumps to the bankable range.
+								# It may be in the current bank or in another though; but the safer
+								# is to output a label relative to this bank.
+								target_label = function_label(target_offset)
+								local_target_address = get_local_address(target_offset)
+								byte_labels[local_target_address] = {}
+								byte_labels[local_target_address]["name"] = target_label
+								# we know the label is used once, so set the usage to 1
+								byte_labels[local_target_address]["usage"] = 1
+								# since the label has not been output yet, mark it as "not defined"
+								byte_labels[local_target_address]["definition"] = False
+							else:
+								# the opcode jumps outside of a bankable range:
+								# it is probably actually some data. Output an hexadecimal address.
+								target_label = '${:04x}'.format(local_target_offset)
 
 					else:
 					# anything that isn't a call or jump is a load-based command
