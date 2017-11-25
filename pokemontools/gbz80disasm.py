@@ -20,7 +20,7 @@ z80_table = [
 	('inc  bc', 0),                # 03
 	('inc  b', 0),                 # 04
 	('dec  b', 0),                 # 05
-	('ld   b, ${:02x}', 1),        # 06
+	('ld   b, ${:02X}', 1),        # 06
 	('rlca', 0),                   # 07
 	('ld   [{}], sp', 2),          # 08
 	('add  hl, bc', 0),            # 09
@@ -28,7 +28,7 @@ z80_table = [
 	('dec  bc', 0),                # 0b
 	('inc  c', 0),                 # 0c
 	('dec  c', 0),                 # 0d
-	('ld   c, ${:02x}', 1),        # 0e
+	('ld   c, ${:02X}', 1),        # 0e
 	('rrca', 0),                   # 0f
 	('db   $10', 0),               # 10
 	('ld   de, {}', 2),            # 11
@@ -36,7 +36,7 @@ z80_table = [
 	('inc  de', 0),                # 13
 	('inc  d', 0),                 # 14
 	('dec  d', 0),                 # 15
-	('ld   d, ${:02x}', 1),        # 16
+	('ld   d, ${:02X}', 1),        # 16
 	('rla', 0),                    # 17
 	('jr   {}', 1),                # 18
 	('add  hl, de', 0),            # 19
@@ -44,7 +44,7 @@ z80_table = [
 	('dec  de', 0),                # 1b
 	('inc  e', 0),                 # 1c
 	('dec  e', 0),                 # 1d
-	('ld   e, ${:02x}', 1),        # 1e
+	('ld   e, ${:02X}', 1),        # 1e
 	('rra', 0),                    # 1f
 	('jr   nz, {}', 1),            # 20
 	('ld   hl, {}', 2),            # 21
@@ -52,7 +52,7 @@ z80_table = [
 	('inc  hl', 0),                # 23
 	('inc  h', 0),                 # 24
 	('dec  h', 0),                 # 25
-	('ld   h, ${:02x}', 1),        # 26
+	('ld   h, ${:02X}', 1),        # 26
 	('daa', 0),                    # 27
 	('jr   z, {}', 1),             # 28
 	('add  hl, hl', 0),            # 29
@@ -60,7 +60,7 @@ z80_table = [
 	('dec  hl', 0),                # 2b
 	('inc  l', 0),                 # 2c
 	('dec  l', 0),                 # 2d
-	('ld   l, ${:02x}', 1),        # 2e
+	('ld   l, ${:02X}', 1),        # 2e
 	('cpl', 0),                    # 2f
 	('jr   nc, {}', 1),            # 30
 	('ld   sp, {}', 2),            # 31
@@ -68,7 +68,7 @@ z80_table = [
 	('inc  sp', 0),                # 33
 	('inc  [hl]', 0),              # 34
 	('dec  [hl]', 0),              # 35
-	('ld   [hl], ${:02x}', 1),     # 36
+	('ld   [hl], ${:02X}', 1),     # 36
 	('scf', 0),                    # 37
 	('jr   c, {}', 1),             # 38
 	('add  hl, sp', 0),            # 39
@@ -76,7 +76,7 @@ z80_table = [
 	('dec  sp', 0),                # 3b
 	('inc  a', 0),                 # 3c
 	('dec  a', 0),                 # 3d
-	('ld   a, ${:02x}', 1),        # 3e
+	('ld   a, ${:02X}', 1),        # 3e
 	('ccf', 0),                    # 3f
 	('ld   b, b', 0),              # 40
 	('ld   b, c', 0),              # 41
@@ -212,7 +212,7 @@ z80_table = [
 	('jp   {}', 2),                # c3
 	('call nz, {}', 2),            # c4
 	('push bc', 0),                # c5
-	('add  ${:02x}', 1),           # c6
+	('add  ${:02X}', 1),           # c6
 	('rst  $0', 0),                # c7
 	('ret  z', 0),                 # c8
 	('ret', 0),                    # c9
@@ -220,7 +220,7 @@ z80_table = [
 	('bitops', 1),                 # cb
 	('call z, {}', 2),             # cc
 	('call {}', 2),                # cd
-	('adc  ${:02x}', 1),           # ce
+	('adc  ${:02X}', 1),           # ce
 	('rst  $8', 0),                # cf
 	('ret  nc', 0),                # d0
 	('pop  de', 0),                # d1
@@ -228,7 +228,7 @@ z80_table = [
 	('db   $d3', 0),               # d3
 	('call nc, {}', 2),            # d4
 	('push de', 0),                # d5
-	('sub  ${:02x}', 1),           # d6
+	('sub  ${:02X}', 1),           # d6
 	('rst  $10', 0),               # d7
 	('ret  c', 0),                 # d8
 	('reti', 0),                   # d9
@@ -236,7 +236,7 @@ z80_table = [
 	('db   $db', 0),               # db
 	('call c, {}', 2),             # dc
 	('db   $dd', 2),               # dd
-	('sbc  ${:02x}', 1),           # de
+	('sbc  ${:02X}', 1),           # de
 	('rst  $18', 0),               # df
 	('ld   [{}], a', 1),           # e0
 	('pop  hl', 0),                # e1
@@ -244,15 +244,15 @@ z80_table = [
 	('db   $e3', 0),               # e3
 	('db   $e4', 0),               # e4
 	('push hl', 0),                # e5
-	('and  ${:02x}', 1),           # e6
+	('and  ${:02X}', 1),           # e6
 	('rst  $20', 0),               # e7
-	('add  sp, ${:02x}', 1),       # e8
+	('add  sp, ${:02X}', 1),       # e8
 	('jp   hl', 0),                # e9
 	('ld   [{}], a', 2),           # ea
 	('db   $eb', 0),               # eb
 	('db   $ec', 2),               # ec
 	('db   $ed', 2),               # ed
-	('xor  ${:02x}', 1),           # ee
+	('xor  ${:02X}', 1),           # ee
 	('rst  $28', 0),               # ef
 	('ld   a, [{}]', 1),           # f0
 	('pop  af', 0),                # f1
@@ -260,15 +260,15 @@ z80_table = [
 	('di', 0),                     # f3
 	('db   $f4', 0),               # f4
 	('push af', 0),                # f5
-	('or   ${:02x}', 1),           # f6
+	('or   ${:02X}', 1),           # f6
 	('rst $30', 0),                # f7
-	('ld   hl, sp+${:02x}', 1),    # f8
+	('ld   hl, sp+${:02X}', 1),    # f8
 	('ld   sp, hl', 0),            # f9
 	('ld   a, [{}]', 2),           # fa
 	('ei', 0),                     # fb
 	('db   $fc', 0),               # fc
 	('db   $fd', 0),               # fd
-	('cp   ${:02x}', 1),           # fe
+	('cp   ${:02X}', 1),           # fe
 	('rst  $38', 0),               # ff
 ]
  
@@ -319,16 +319,16 @@ def asm_label(address):
 	"""
 	Return a local label name for asm at <address>.
 	"""
-	return 'label_%x' % address
+	return 'label_%X' % address
 
 def data_label(address):
 	"""
 	Return a local label name for data at <address>.
 	"""
-	return 'data_%x' % address
+	return 'data_%X' % address
 
 def function_label(address):
-	return "func_%x" % address
+	return "func_%X" % address
 
 def get_local_address(address):
 	"""
@@ -452,7 +452,7 @@ def create_address_comment(offset):
 	else:
 		comment_bank_addr = offset
 		
-	return " ; %x (%x:%x)" % (offset, comment_bank, comment_bank_addr)
+	return " ; %X (%X:%X)" % (offset, comment_bank, comment_bank_addr)
 			
 def offset_is_used(labels, offset):
 	if offset in labels.keys():
@@ -714,7 +714,7 @@ class Disassembler(object):
 								data_tables[local_target_address]["definition"] = True
 							
 							# format the resulting argument into the output string
-							opcode_output_str = opcode_str.format(opcode_output_str) + " ; db   ${:02x}, ${:02x}".format(opcode_byte, opcode_arg_1)
+							opcode_output_str = opcode_str.format(opcode_output_str) + " ; db   ${:02X}, ${:02X}".format(opcode_byte, opcode_arg_1)
 							
 							# debug function
 							if created_but_unused_labels_exist(byte_labels) and debug:
@@ -728,7 +728,7 @@ class Disassembler(object):
 							high_ram_label = self.find_label(high_ram_address, bank_id)
 							# if we couldn't find one, default to the address
 							if high_ram_label is None:
-								high_ram_label = "$%x" % high_ram_address
+								high_ram_label = "$%X" % high_ram_address
 							
 							# format the resulting argument into the output string
 							opcode_output_str = opcode_str.format(high_ram_label)
@@ -741,7 +741,7 @@ class Disassembler(object):
 								opcode_output_str = opcode_str
 							else:
 								# `halt` not followed by a `nop`: it is actually data
-								opcode_output_str = 'db   ${:02x}, ${:02x}'.format(halt_opcode, opcode_arg_1)
+								opcode_output_str = 'db   ${:02X}, ${:02X}'.format(halt_opcode, opcode_arg_1)
 						
 						else:
 						# if this isn't a relative jump or hram read/write, just format the byte into the opcode string
@@ -778,7 +778,7 @@ class Disassembler(object):
 							else:
 								# the opcode jumps outside of a bankable range:
 								# it is probably actually some data. Output an hexadecimal address.
-								target_label = '${:04x}'.format(local_target_offset)
+								target_label = '${:04X}'.format(local_target_offset)
 
 					else:
 					# anything that isn't a call or jump is a load-based command
@@ -800,7 +800,7 @@ class Disassembler(object):
 									
 							elif local_target_offset >= 0x8000 or not parse_data:
 							# do not create a label if this is a wram label or parse_data is not set
-								target_label = "$%x" % local_target_offset
+								target_label = "$%X" % local_target_offset
 							
 							elif local_target_offset in data_tables.keys():
 							# if the target offset has been created as a data label, increase usage and use the already defined name
@@ -829,7 +829,7 @@ class Disassembler(object):
 				
 			else:
 				# output a single lined db, using the current byte
-				output += self.spacing + "db   ${:02x}\n".format(opcode_byte) #+ " ; " + hex(offset)
+				output += self.spacing + "db   ${:02X}\n".format(opcode_byte) #+ " ; " + hex(offset)
 				# manually increment offset and current byte number
 				offset += 1
 				current_byte_number += 1
@@ -885,7 +885,7 @@ class Disassembler(object):
 						output_lines.pop(i)
 					elif label_name in line:
 					# if the label is used in a load-based opcode, replace it with the raw hex reference
-						output_lines[i] = output_lines[i].replace(label_name, "$%x" % get_local_address(label_addr))
+						output_lines[i] = output_lines[i].replace(label_name, "$%X" % get_local_address(label_addr))
 		
 		# Fix relative jumps without a matching target label
 		# (This probably means it is actually data)
