@@ -266,8 +266,8 @@ z80_table = [
 	('ld   sp, hl', 0),            # f9
 	('ld   a, [{}]', 2),           # fa
 	('ei', 0),                     # fb
-	('db   $fc', 2),               # fc
-	('db   $fd', 2),               # fd
+	('db   $fc', 0),               # fc
+	('db   $fd', 0),               # fd
 	('cp   ${:02x}', 1),           # fe
 	('rst  $38', 0),               # ff
 ]
