@@ -659,7 +659,7 @@ class Disassembler(object):
 			data_tables[local_offset]["definition"] = True
 			
 			# for now, output the byte and data labels (unused labels will be removed later
-			output += line_label + "\n" + data_line_label + "\n"
+			output += "{}::\n{}::\n".format(line_label, data_line_label)
 			
 			# get the current byte
 			opcode_byte = rom[offset]
@@ -862,7 +862,7 @@ class Disassembler(object):
 		# first, clean up on unused byte labels
 		for label_line in byte_labels.values():
 			if label_line["usage"] == 0:
-				output = output.replace(("\n" + label_line["name"] + "\n"), "\n")
+				output = output.replace(("\n" + label_line["name"] + "::\n"), "\n")
 		
 		# clean up on unused data labels
 		# this is slightly trickier to do as arguments for two byte variables use data labels
