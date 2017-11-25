@@ -7,6 +7,7 @@ from __future__ import absolute_import
 
 import os
 import argparse
+import re
 from ctypes import c_int8
 
 from . import configuration
@@ -694,7 +695,7 @@ class Disassembler(object):
 							# if we're jumping to an address that is located before the start offset, assume it is a function
 								opcode_output_str = function_label(target_address)
 							else:
-							# create a new label
+							# else we are jumping forward, and the label has not been created yet: create a new label
 								opcode_output_str = self.find_asm_label(target_address, bank_id)
 								byte_labels[local_target_address] = {}
 								byte_labels[local_target_address]["name"] = opcode_output_str
@@ -710,7 +711,7 @@ class Disassembler(object):
 								data_tables[local_target_address]["definition"] = True
 							
 							# format the resulting argument into the output string
-							opcode_output_str = opcode_str.format(opcode_output_str)
+							opcode_output_str = opcode_str.format(opcode_output_str) + " ; db   ${:02x}, ${:02x}".format(opcode_byte, opcode_arg_1)
 							
 							# debug function
 							if created_but_unused_labels_exist(byte_labels) and debug:
@@ -807,7 +808,7 @@ class Disassembler(object):
 				
 			else:
 				# output a single lined db, using the current byte
-				output += self.spacing + "db ${:02x}\n".format(opcode_byte) #+ " ; " + hex(offset)
+				output += self.spacing + "db   ${:02x}\n".format(opcode_byte) #+ " ; " + hex(offset)
 				# manually increment offset and current byte number
 				offset += 1
 				current_byte_number += 1
@@ -823,7 +824,7 @@ class Disassembler(object):
 				if offset >= stop_offset:
 					break
 				else:
-				 	continue
+					continue
 			# check if this is the end of the function, or we're processing data
 			elif (opcode_byte in unconditional_jumps + unconditional_returns) or is_data:
 				# define data if it is located at the current offset
@@ -865,6 +866,23 @@ class Disassembler(object):
 					# if the label is used in a load-based opcode, replace it with the raw hex reference
 						output_lines[i] = output_lines[i].replace(label_name, "$%x" % get_local_address(label_addr))
 		
+		# Fix relative jumps without a matching target label
+		# (This probably means it is actually data)
+		for i, line in enumerate(output_lines):
+			match = re.match('^' + self.spacing + 'jr   .*_([0-9A-Fa-f]*) ; (db   .*, .*)', line)
+			if match:
+				target_address = int(match.group(1), 16)
+				local_target_address = get_local_address(target_address)
+				data_label_created = local_offset in data_tables.keys()
+				byte_label_created = local_offset in byte_labels.keys()
+				if data_label_created or byte_label_created:
+				# the jr jumps to an existing label: remove the data instruction
+					output_lines[i] = line.split(';')[0] + '\n'
+				else:
+				# the jr jumps to a label that doesn't exist: replace it by its data instruction
+					data_instruction = match.group(2)
+					output_lines[i] = self.spacing + data_instruction + '\n'
+
 		# convert the modified list of lines into a string
 		output = "".join(output_lines)
 		
