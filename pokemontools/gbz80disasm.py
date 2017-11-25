@@ -132,7 +132,7 @@ z80_table = [
 	('ld   [hl], e', 0),           # 73
 	('ld   [hl], h', 0),           # 74
 	('ld   [hl], l', 0),           # 75
-	('halt', 0),                   # 76
+	('halt', 1),                   # 76
 	('ld   [hl], a', 0),           # 77
 	('ld   a, b', 0),              # 78
 	('ld   a, c', 0),              # 79
@@ -312,7 +312,8 @@ absolute_jumps = [0xc3, 0xc2, 0xca, 0xd2, 0xda]
 call_commands = [0xcd, 0xc4, 0xcc, 0xd4, 0xdc]
 relative_jumps = [0x18, 0x20, 0x28, 0x30, 0x38]
 unconditional_jumps = [0xc3, 0x18]
-
+halt_opcode = 0x76
+nop_opcode = 0x0
 
 def asm_label(address):
 	"""
@@ -674,7 +675,8 @@ class Disassembler(object):
 				opcode_arg_2 = rom[offset+2]
 				
 				if opcode_nargs == 0:
-				# set output string simply as the opcode
+				# opcodes with 0 arguments
+					# set output string simply as the opcode
 					opcode_output_str = opcode_str
 				
 				elif opcode_nargs == 1:
@@ -730,6 +732,16 @@ class Disassembler(object):
 							
 							# format the resulting argument into the output string
 							opcode_output_str = opcode_str.format(high_ram_label)
+
+						elif opcode_byte == halt_opcode:
+						# handle `halt` opcode
+							if opcode_arg_1 == nop_opcode:
+								# In the binary, `halt` is always followed by a `nop`.
+								# The compiler will insert it for us, so we just need to output the halt.
+								opcode_output_str = opcode_str
+							else:
+								# `halt` not followed by a `nop`: it is actually data
+								opcode_output_str = 'db   ${:02x}, ${:02x}'.format(halt_opcode, opcode_arg_1)
 						
 						else:
 						# if this isn't a relative jump or hram read/write, just format the byte into the opcode string
