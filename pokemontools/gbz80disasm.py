@@ -468,7 +468,7 @@ class Disassembler(object):
 		Setup the class instance.
 		"""
 		self.config = config
-		self.spacing = '\t'
+		self.spacing = '    '
 		self.rom = None
 		self.sym = None
 		self.rsym = None
